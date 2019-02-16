@@ -105,13 +105,20 @@ page = flight_information.json()['results']
 money_list = []
 #print (page[1])
 for plan in page:
-    if plan['transferCountType'] == '0':
+    if plan["transferCountType"] != "0" :
+        journey = ""
+        for flights in plan["availableJourneys"][0]["airFlights"] :
+            journey += flights["airCarrierCorName"] + flights["airLine"] + flights["airFlightNo"]
+        flight_price = int(plan["taxAmont"]) + int(plan["trueBasePrice"]) 
+        print(journey + "--" + "价格为" + str(flight_price))
+    #print(json.dumps(plan , indent = 4 , ensure_ascii = False))
+    else:
         #print (json.dumps(plan , indent=4 , ensure_ascii=False))
         #print(type(plan))
-        flghtcarrier = plan["availableJourneys"][0]["airFlights"][0]["airLineName"]
-        flghtcode = plan["availableJourneys"][0]["airFlights"][0]["airLine"] + plan["availableJourneys"][0]["airFlights"][0]["airFlightNo"]
-        flight_price = int(plan["taxAmont"]) + int(plan["trueBasePrice"])       
-        print(flghtcarrier+flghtcode+"--价格"+str(flight_price))
+         flghtcarrier = plan["availableJourneys"][0]["airFlights"][0]["airLineName"]
+         flghtcode = plan["availableJourneys"][0]["airFlights"][0]["airLine"] + plan["availableJourneys"][0]["airFlights"][0]["airFlightNo"]
+         flight_price = int(plan["taxAmont"]) + int(plan["trueBasePrice"])       
+         print(flghtcarrier+flghtcode+"--价格为"+str(flight_price))
         #print(type(plan["activitys"]))
         #print(type(plan["availableJourneys"]))
         #print ("%s%s%s-最低价：%s"%(plan["availableJourneys"]["airFlights"]["airCarrierCorName"] , plan["availableJourneys"]["airFlights"]["airLine"] , plan["availableJourneys"]["airFlights"]["airFlightNo"] , "3864")) 
